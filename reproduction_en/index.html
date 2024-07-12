@@ -1,0 +1,482 @@
+<!doctype html>
+<html>
+    <head>
+    <title>sexual_reproduction</title>  <meta charset='utf-8' />
+      <style>
+           body {font-size: 16pt; }
+		   h1 { font-size: 240%; color: rgb(70,70,130); text-align: center;} 
+		   h2 { font-size: 170%; color: rgb(50,50,120); text-align: center; } 
+		   h3 { font-size: 130%; color: rgb(10,10,100); padding-left: 10px;} 
+		   h4 { font-size: 110%; color: rgb(10,10,80); padding-left: 10px;} 		   
+		   p {  padding-left: 10px;}
+		   div { padding-left: 60px;}
+		   img { padding-left: 100px;}
+		   blockquote{  background-color: rgb(230,230,230);}
+		   code {  background-color: rgb(230,230,230);}
+  		</style>
+    </head>
+<body>
+
+<h1>The advantage of sexual reproduction over asexual</h1>
+
+<p>Let's try to compare sexual and asexual reproduction on small math models.</p>
+
+<p> The models use the following definitions:</p>
+<ul>
+<li><b>The perfect genome</b> - a predetermined genome that ensures maximum fitness to the environment. </li>
+<li><b>Genome</b> - is a sequence of alphabet letters and digits that should achieve the perfect genome via natural selection. </li>
+<li><b>Sexual reproduction</b>  - reproduction with genetic recombination between two organisms. </li>
+<li><b>Asexual reproduction</b> - reproduction by copying itself. </li>
+<li><b>Mutation</b> - a random change in the genome of a new organism.</li>
+
+</ul>
+
+<p>
+Reality is a bit more complicated.
+</p>
+<p>
+Not every type of sexual reproduction has gene recombination  <i>(e.g. parthenogenesis)</i>,</br>
+while some species with asexual reproduction do have alternate ways to recombine genes<i>(e.g. horizontal gene transfer)</i>
+</p>
+<p>
+The real genome's structure is quite complicated, but in these math models, a simple sequence of digits and letters will be enough.
+
+</p>
+<p>
+Let's start with the first model.
+</p>
+
+<hr>
+<h2>Simple model</h2>
+<hr>
+<h3>model No. 1</h3>
+<div>
+<canvas id="cnv_s1" width="900" height="480" style="border: 1px solid #000000;"></canvas><br>
+<button id="step_s1">START</button> 
+<input id="loop_s1" checked  type="checkbox"> loop &nbsp; &nbsp; &nbsp;
+<input id="cross_s1" type="checkbox"> cross &nbsp; &nbsp; &nbsp;
+<input id="graph_s1" type="checkbox"> graph &nbsp; &nbsp; &nbsp;   
+<button id="reset_s1">RESET</button> 
+<p> probability of mutation &nbsp;
+  <select id="mut_select_s1">
+	<option> 0.1 </option> <option selected> 0.2 </option> <option> 0.3 </option>
+	<option> 0.4 </option> <option > 0.5 </option> <option> 0.6 </option> 
+	<option> 0.7 </option> <option >0.8</option> <option> 0.9</option><option> 1.0 </option>
+  </select></p>
+
+</div>
+<hr>
+<script src="script/char20.js" > </script>
+
+
+
+<h3>The model's scheme</h3>
+<img src="img/model1.png" />
+
+<h4>The direction of selection</h4>
+<p>
+The blue text on the top is <b>the perfect genome</b>. Each organism should try to achieve it.
+<br>
+<b>A genome</b> is a sequence of 57 symbols<br>
+There are 20 organisms in the model. Their genome is recorded in the rows.<br>
+Their initial genome is blank.<br>
+The simulation goes for 900 generations.
+</p>
+
+<h4>fitness</h4>
+<p>
+An organism's fitness is measured by the number of matches with the perfect genome.<br>
+These matches are marked green.<br>
+Total number of matches in organisms is displayed on the left side.
+</p>
+
+<h4>Selection</h4>
+
+<p>In each generation, we will leave half of the organisms which then will form the next generation.</p>
+
+<p>We can simply exclude the ones with lower fitness. But we will use a more natural way of selection.</p>
+<p>
+Fitness will determine the chance of an organism to leave an offspring.<br>
+This way, even the weakest organism will have a chance for reproduction and vice-versa.
+This will make the simulation a bit closer to reality.</p>
+
+<p>Let's see an example.</p>
+
+<p>
+We have three organisms with the fitness of 11, 13, and 12 respectively.<br>
+Let's calculate the reproduction probability.</p>
+
+<img src="img/otbor.png" /> <br>
+
+<p>
+<ol>
+ <li>Сalculate the fitness using the formula: <br>
+ <code> new fitness = original fitness - (minimal fitness - 1) </code><br>
+The new fitness is 1, 3, 2.
+ </li>
+ <li>Calculate the sum of fitness/li>
+ <li>Generate a random number in the range from 0 (zero) to the resulting sum.<br>
+ This random number will determine the probability of leaving an offspring.</li>
+</ol>
+
+Using this algorithm, we have the following probabilities:
+<ul>
+<li> Organism (11) - 16.7 % </li>
+<li> Organism (13) - 50.0 % </li>
+<li> Organism (12) - 33.3 % </li>
+</ul>
+</p>
+
+
+<h4>Reproduction</h4>
+<p>
+With each step, we select half of the organisms to be the foundation for the next generation.<br>
+The hash symbol on the left marks organisms selected to form the next generation.<br>
+The type of reproduction is determined by us. Checking the <b>cross</b> checkbox enables <b>sexual reproduction</b>. <br>
+<ul>
+<li> When <b>asexual reproduction</b> is enabled, each organism selected for reproduction will create two clones of itself. <br>
+Each organism will be an ancestor for exactly two organisms in the new generation.
+</li>
+<li>When <b>sexual reproduction</b> is enabled each organism selected for reproduction will choose a partner and create a new organism whose genome is a random recombination of its parents' genes.<br>
+Each organism mates two times to maintain the population.<br>
+This way each organism is an ancestor for two or more organisms in the new generation.
+</li>
+</ul>
+</p>
+<img src="img/reprod.png" />
+<h4>Mutations</h4>
+<p>
+Each organism in a new generation can mutate. <br>
+The probability of mutation is set by the user. <br>
+When an organism mutates a random symbol in its genome is replaced by another random symbol.
+</p>
+
+
+<h4>Theory</h4>
+<p>We have two organisms. Each of them has a beneficial gene in different positions. </p>
+<p>
+With <b>asexual reproduction</b>, the descendants of only one of the organisms will remain in the population.<br>
+Asexual organisms can't recombine genes, so the only source of changes in the population are mutations.
+</p>
+
+<p>
+With <b>sexual reproduction</b>, both parents can pass their beneficial mutations to a new organism.
+</p>
+
+<img src="img/adv.png" />
+<p>
+This scheme illustrates the advantages of sexual reproduction.<br>
+But if you play around with the model, you will notice that the advantage is insignificant.<br>
+Only with a high probability of mutation, does sexual reproduction begin to show better results.
+</p>
+
+<p>
+<b>Sexual reproduction</b> becomes more effective than asexual only if there are many various beneficial mutations in different organisms in the population at the same time.<br>
+This way organisms with combined beneficial mutations will appear in each new generation.
+</p>
+
+<p>
+To boost efficiency even more we can increase the size of the population and genome's length. <br>
+The larger the population size, the more beneficial mutations will appear in a generation, and the more effective sexual reproduction becomes.</p>
+
+<p>
+But population size also plays a huge role in natural selection.<br>
+In a large population, even the small benefits that a new mutation provides will be noticed by natural selection and spread quickly in the population.
+</p>
+
+<p>
+Now we will see another model showing how the frequency of variants of the same gene in a population changes with the change of generations and how the effectiveness of natural selection depends on the size of the population.
+</p>
+
+  
+<hr>   
+   <h2>Genetic drift VS Natural selection</h2>
+<hr>
+<h3>model No. 2</h3>
+<div>
+<canvas id="cnv_s2" width="900" height="530" style="border: 1px solid #000000;"></canvas> <br>
+<button id="rbtn_s2">START</button> <br>
+<p>the size of the population &nbsp;
+<select id="popul_select_s2">
+	<option > 100</option><option >200</option> <option> 500</option>
+	<option selected >1000</option> <option> 2000</option>
+	<option >4000</option> <option> 8000</option><option >16000</option> <option> 32000</option>
+	<option >64000</option> <option >128000</option> <option> 256000</option>
+</select></p>
+<p>adaptive advantage &nbsp;
+<select id="advan_select_s2">
+	<option selected > 0</option>
+	<option >0.1</option> <option> 0.2</option><option >0.5</option> <option> 1.0</option>
+	<option >1.5</option> <option> 2.0</option><option >2.5</option> <option> 3.0</option>
+	<option >3.5</option> <option> 4.0</option><option >4.5</option> <option >5.0</option> 
+</select></p>
+<p>initial ratio &nbsp;
+<select id="prop_select_s2">
+	<option> 0.1 </option> <option> 0.2 </option> <option> 0.3 </option>
+	<option> 0.4 </option> <option selected> 0.5 </option> <option> 0.6 </option> 
+	<option> 0.7 </option> <option >0.8</option> <option> 0.9</option>
+</select></p>
+</div>
+<hr>
+<script  src="script/drift.js" > </script>     
+   
+   
+ <p>Some definitions before we begin:</p> 
+<ul>  
+<li><b>Alleles</b> - different variants of the same gene</li>
+<li><b>Genetic drift</b> - the change in the frequency of an existing gene variant (allele) in a population due to random chance</li>   
+</ul>   
+
+<p>
+Different variants of the same gene (alleles) may be present in the population.<br>
+If each allele is equally beneficial, then during the transition to the next generation a random shift in allele frequencies will happen.
+</p>
+<p>
+Moreover, the smaller the population size, the more drastic changes in the frequency of alleles will occur.<br>
+In a population of limited size, one allele will eventually displace the other.<br>
+The smaller the population size, the faster this will happen.
+</p>
+<p>
+In a large population, if an allele gives an advantage, then the more likely it is to replace all other alleles.<br>
+In a small population, even an advantageous allele can disappear due to random frequency fluctuation.
+</p>
+<p style="background-color:rgb(255,255,100);" >
+In small populations, <b>genetic drift</b> can be more impactful than <b>natural selection</b>.</b>.<br>
+</p>
+<p>You can see it in the screenshots below. <br>
+The graphs show the distribution of the advantageous allele in the population. 
+</p>
+<p>
+The left graph shows four simulations with a population size of 1000.<br>
+In two out of four cases, the allele disappeared despite being advantageous.
+</p>
+<p>
+The right graph shows four simulations with a population size of 256000.<br>
+Natural selection spreads the allele in the population.
+</p>
+
+<img src="img/drf1.png" />
+
+<h4>How it works in the model</h4>
+<p>
+Let's say there are two variants of the same gene in the population:
+</p>
+<ul>
+<li>Variant <b>A</b></li>
+<li>Variant <b>B</b></li>
+</ul>
+<p>Before launching the model we can set the:</p>
+<ol>
+<li>The size of the population</li>
+<li>the advantage of <b>Variant A</b> over <b>Variant B</b></li>
+<li>Initial distribution of Variant <b>A</b> in the population</li>
+</ol>
+<p>
+The model simulates frequency changes of four pairs of alleles at once. The pairs are marked with different colors.
+</p>
+
+<p>
+To calculate the allele's frequency the following algorithm is used:
+</p>
+<p>
+Lets say the size of the population = 1000, where Variant A = 400, Variant B = 600
+</p>
+
+<p>
+We generate a random number in the range from 0 to 1000.
+</p>
+<ul>
+<li>If this number is within a range of 0 to 400, we get an organism with the <b>Variant A</b> gene. </li>
+<li>If this number is within a range of 400 to 1000, we get an organism with the <b>Variant B</b> gene.</li>
+</ul>
+
+<p>
+If Variant  <b>A</b> has a <b> 1 % </b> advantage, we increase the range by <b> 1% </b> and get <b> 404</b> .
+</p>
+<p>
+We generate a random number within a range of 0 to 1004 <i>(404 + 600)</i>
+</p>
+<ul>
+<li>If this number is within a range of 0 to 404, we get an organism with the <b>Variant A</b> gene. </li>
+<li>If this number is within a range of 404 to 1004, we get an organism with the <b>Variant B</b> gene.</li>
+</ul>
+
+<img src="img/drf.png" /> <br>
+
+
+
+
+<hr>
+<h2> The Complete Model </h2>
+<hr>
+<h3>model No. 3</h3>
+<div>
+<canvas id="cnv_s3" width="900" height="655"></canvas>  <br>    			
+<button id="step_s3" >START</button> &nbsp; &nbsp; 
+<input id="cross_s3" type="checkbox" > cross &nbsp; &nbsp; 
+<select id="viewSelect_s3">
+	<option value="0" selected> genom </option>
+	<option value="1">          bar   </option>
+	<option value="2">          graph </option>
+</select>  <br> <br>
+<input type="range" id="mut_s3" min="0" max="1" value="0.5" step = "0.05" />  
+<label id = "mutP_s3">0.5</label> &nbsp; &nbsp; <b>probability of mutation</b> <br>
+<input type="range" id="power_s3" min="0" max="3" value="2" step = "1" />  
+<label id = "powerP_s3">2</label> &nbsp; &nbsp; <b>force of selection</b> <br>
+<button id="reset_s3" >RESET</button> &nbsp; &nbsp;  &nbsp; &nbsp;
+<select id="pop_s3">
+	<option selected> 600 </option>
+	<option >        1800 </option>
+	<option >        5400 </option>
+</select>  &nbsp; &nbsp; <b>population size</b> <br><br>
+<input id="stop9000_s3"  type="checkbox" > stop at 9000 
+
+</div>
+<hr>
+<script  src="script/crossFull.js" > </script>  
+ 
+
+<h3>The model's scheme</h3> 
+<p> This is an improved version of the first model. To see the advantages of natural selection, I increased the size of the population <i>(600, 1800, 5400)</i>  and the length of the genome  <i>(224)</i>.
+</p>
+ 
+ <p> 
+ Each gene can increase fitness by one point, decrease it by one, or have no effect at all.<br>
+ The probability of negative mutation is 90 times higher.
+ </p>
+ 
+<ul> 
+ <li>Negative Mutation - 90 % </li>
+ <li>Neutral Mutation - 9 % </li>
+ <li>Beneficial Mutation - 1 % </li>
+ </ul>
+ 
+  <img src="img/gn90.png" /> <br>
+ 
+
+ 
+<p> 
+  You can choose different types of presentation:
+  	<ul>
+  	<li><b>genom</b> - The default mode. Each gene is represented by 1-pixel-wide bar. Beneficial genes are marked blue and negative - orange.</li>
+  	<li><b>bar</b> - a bar chart showing the prevalence of negative and beneficial mutations in each gene in a population. </li>
+  	<li><b>graph</b> - a graph showing the fitness value of the best organism in the population.  <br>
+  	There are also graphs of the average number of negative and beneficial mutations in one organism.
+  	</li>
+  	</ul>
+</p> 
+
+<h4> Asexual VS Sexual </h4>
+
+ <p> 
+By experimenting with the model, we can make sure that sexual reproduction <i>(cross)</i> not only increases the rate at which the fitness of the population grows but also increases the limit to which fitness can reach.
+</p> 
+ <p>
+ In the third image,  <b>sexual reproduction</b> was disabled and fitness immediately began to decline.
+  </p>
+
+ <img src="img/main3.png" /> <br>
+ 
+ 
+<h4>Mutation probability and its effect on the rate of evolution</h4>
+ <p>
+ <b>probability of mutation</b> defines the probability for mutation <i>(random change of a gene)</i> to occur in a new organism.<br>
+ </p>
+ 
+  <p>
+The model shows that <b>sexual reproduction</b> does not significantly affect the evolution of the population.<br>
+Genetic recombination quickly accumulates beneficial mutations and displaces negative ones.<br>
+Moreover, with an increase in the probability of mutations the rate of evolution also increases.
+  </p>
+
+  <p>
+With <b>asexual reproduction</b>, an increase in the probability of mutations limits the maximum level of fitness.
+  </p>
+  
+  <img src="img/mutprob.png" /> <br>
+
+ <h4>Disabling mutations</h4>
+ <p>The model allows disabling mutation by setting the probability to zero.</p> 
+
+ <p> 
+ Without mutations all the organisms will quickly achieve one common genome.
+ </p>
+
+  <p>
+  With <b>sexual reproduction</b>, a significant part of beneficial genes will remain, while most of the negative ones will be displaced from the genome.
+  </p>
+  
+  <p>
+  With <b>asexual reproduction</b>, the population will become clones of one type of organism.<br>
+We can launch the model a few times and see how groups of clones compete.<br>
+The last surviving genome type is a clone of one of the original organisms.
+  </p>
+
+   <img src="img/mut.png" /> <br>
+   
+   <p>
+   This experiment very clearly shows the advantage of <b>sexual reproduction</b>. <br>
+   And if we increase a population from 600 to 5400, then with sexual reproduction an almost perfect genome will appear, with only a few genes missing.
+   </p>
+   <img src="img/mut0.png" /> <br>
+   <p>
+   With <b>asexual reproduction</b>, the result will be clones of one of the original organisms.
+   </p>
+   
+
+ <h4> Force of selection </h4>
+ <p>
+ <b> force of selection </b> defines the intensity of natural selection in the model. <br>
+ 
+The higher it is, the less likely it is for the less fit to leave offspring<br>
+ The image below shows the probability of leaving offspring for individuals with fitness of <b>11</b>, <b>12</b> and <b>13</b>.
+ </p>
+  <img src="img/otbor2.png" /><br> 
+ <p>
+ Setting the parameter to  <b>0</b> , disables natural selection. <br>
+The probability of leaving offspring is completely random for each organism.
+ </p>
+ <p>
+In the first model, I've explained how natural selection works.<br>
+Now, the formula is:<br><br>
+  <code> new fitness = original fitness - (minimal fitness - constant) </code> <br><br>
+  The constant value depends on the  <b> force of selection </b> 
+  <ol><li><b>100</b></li><li><b>10</b></li><li><b>1</b></li></ol>
+ </p>
+ 
+  <p>
+  With the value of the <b>force of selection = 1</b>, the difference in the selection is a fraction of a percent, but development still occurs.
+  </p>
+  
+  <img src="img/power.png" /> <br> 
+ 
+   <p>
+   If you disable selection, <b> force of selection = 0</b>, the population's genome will quickly return to its original state, where each gene will have a random value.
+   </p>
+ 
+ 
+<h4> The size of the population</h4>
+<p>
+The size of the population greatly affects its development.<br>
+</p>
+<p>
+The model has three available sizes <i>(600, 1800, 5400)</i><br>
+<i>(Only 600 genomes are visible in the Genome mode)</i>
+</p>
+
+<p>
+Для графиков использовался самый слабый отбор <b> force of selection = 1 </b><br>
+При половом размножении вероятность мутации <b>0.5</b>, при бесполом <b>0.1</b>
+
+In the charts below <b> force of selection = 1 </b>. <br>
+With sexual reproduction, the probability of mutation is 0.5, with asexual 0.1
+</p>
+
+
+
+
+
+ 
+  <img src="img/pop.png" />
+ </body>    
+</html>
